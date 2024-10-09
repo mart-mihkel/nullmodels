@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nullmodel_precision_recall"
+version = "0.0.1"
+description = "Nullmodel precision recall curve simulation utilities"
+requires-python = ">=3.7"
+dependencies = [
+    "numpy>=1.26",
+    "plotnine>=0.13",
+]
+
+[project.urls]
+source = "https://github.com/mart-mihkel/nullmodel-precision-recall"
