@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "nullmodel_precision_recall"
+name = "pr"
 version = "0.0.1"
-description = "Nullmodel precision recall curve simulation utilities"
+description = "Precision recall curve simulation utilities"
 requires-python = ">=3.7"
 dependencies = [
     "numpy>=1.26",
