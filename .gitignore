@@ -1,4 +1,10 @@
+# cache
 **/.ipynb_checkpoints
 **/__pycache__
 
+# build output
 dist
+
+# python environment
+.venv
+uv.lock
