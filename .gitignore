@@ -4,7 +4,9 @@
 
 # build output
 dist
+build
 
 # python environment
+.python-version
 .venv
 uv.lock
