@@ -1,38 +1,44 @@
 import numpy as np
-import scipy.stats
+
+from scipy.stats import binom
+from scipy.optimize import brentq
 
 
-def hoeffding_absolute(error=0.1, alpha=0.05) -> float:
+def hoeffding_absolute(error=0.05, alpha=0.05) -> float:
     """
-    Hoeffding inequality based estimate for sample size lower bound.
+    Hoeffding inequality based estimate for sample size lower bound
+    with given maximal absolute error and significance.
     """
-    return -np.log(alpha * 0.5) / (2 * error**2)
+    return -np.log(alpha / 2) / (2 * error**2)
 
 
-def binom_absolute(p: float, error=0.1, alpha=0.05) -> float:
-    n = 100 # TODO:
+def binom_absolute(p: float, error=0.05, alpha=0.05) -> float:
+    n_1 = brentq(
+        f=lambda n: p - error - binom.ppf(n=np.int32(n), p=p, q=alpha / 2) / n,
+        a=1,
+        b=hoeffding_absolute(error, alpha),
+    )
 
-    alpha_2 = alpha * 0.5
+    n_2 = brentq(
+        f=lambda n: binom.ppf(n=np.int32(n), p=p, q=1 - alpha / 2) / n - p - error,
+        a=1,
+        b=hoeffding_absolute(error, alpha),
+    )
 
-    q_1 = scipy.stats.binom(n=n, p=p).ppf(q=alpha_2)
-    q_2 = scipy.stats.binom(n=n, p=p).ppf(q=1 - alpha_2)
-
-    _error = max(p - q_1 / n, q_2 / n - p)
-    assert error == _error
-
-    return _error
+    return np.maximum(n_1, n_2)
 
 
-def binom_relative(p: float, error=0.1, alpha=0.05) -> float:
-    n = 100 # TODO:
-    np = n * p
+def binom_relative(p: float, error=0.05, alpha=0.05) -> float:
+    n_1 = brentq(
+        f=lambda n: 1 - error - binom.ppf(n=np.int32(n), p=p, q=alpha / 2) / (n * p),
+        a=1,
+        b=hoeffding_absolute(error / 2, alpha),
+    )
 
-    alpha_2 = alpha * 0.5
+    n_2 = brentq(
+        f=lambda n: binom.ppf(n=np.int32(n), p=p, q=1 - alpha / 2) / (n*p) - error - 1,
+        a=1,
+        b=hoeffding_absolute(error / 2, alpha),
+    )
 
-    q_1 = scipy.stats.binom(n=n, p=p).ppf(q=alpha_2)
-    q_2 = scipy.stats.binom(n=n, p=p).ppf(q=1 - alpha_2)
-
-    _error = max(1 - q_1 / np, q_2 / np - 1)
-    assert error == _error
-
-    return _error
+    return np.maximum(n_1, n_2)
