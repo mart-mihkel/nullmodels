@@ -1,5 +1,6 @@
 import numpy as np
-import scipy.stats
+
+from scipy.stats import binom, hypergeom
 from plotnine import aes, geom_step, ggplot, labs
 
 
@@ -29,24 +30,19 @@ def run_simulations(
         scores with shape (n_sim, n_samp).
     """
 
-    def __scores_0(init_score):
-        return np.random.permutation(init_score)
-
-    def __scores_1(init_score):
+    def __randomize_score(init_score):
         h0_acc_2 = h0_acc / 2
-        lb, ub = int(h0_acc_2 * n_samp), int((1 - h0_acc_2) * n_samp)
+        lb = int(h0_acc_2 * n_samp)
+        ub = int((1 - h0_acc_2) * n_samp)
         init_score[lb : ub + 1] = np.random.permutation(init_score[lb : ub + 1])
         return init_score
 
     n_pos = int(pos_rate * n_samp)
     n_neg = n_samp - n_pos
 
-    y_true = np.repeat((0, 1), (n_neg, n_pos))
-
     init_scores = np.tile(np.linspace(0, 1, num=n_samp), n_sim).reshape((n_sim, n_samp))
-
-    _y_scores = np.array([__scores_0(s) for s in init_scores])
-    y_scores = np.array([__scores_1(s) for s in init_scores])
+    y_scores = np.array([__randomize_score(s) for s in init_scores])
+    y_true = np.repeat((0, 1), (n_neg, n_pos))
 
     return y_true, y_scores
 
@@ -179,13 +175,13 @@ def pr_quantile_binom(
     th = np.arange(n_samp) / n_samp
     pos = int(n_samp * pos_rate)
     pred_pos = (n_samp * (1 - th)).astype(np.int32)
-    true_pos = scipy.stats.binom(n=pred_pos, p=pos_rate).ppf(q)
+    true_pos = binom.ppf(n=pred_pos, p=pos_rate, q=q)
 
     return true_pos / pred_pos, true_pos / pos, th
 
 
 def pr_quantile_hypergeom(
-    n_samp: int, q=0.9, pos_rate=0.5
+    n_samp: int, h0_acc=0.0, q=0.9, pos_rate=0.5
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Compute q-th quantile of precision recall curve with hypergeometric
@@ -209,36 +205,27 @@ def pr_quantile_hypergeom(
     th = np.arange(n_samp) / n_samp
     pos = int(n_samp * pos_rate)
     pred_pos = (n_samp * (1 - th)).astype(np.int32)
-    true_pos = scipy.stats.hypergeom(M=n_samp, n=pred_pos, N=pos).ppf(q)
+
+    lb = h0_acc / 2 * n_samp
+    ub = (1 - h0_acc / 2) * n_samp
+    n_hyp = (1 - h0_acc) * n_samp
+    pos_hyp = (1 - h0_acc) * pos
+
+    pred_pos_hyp = pred_pos[(lb < pred_pos) & (pred_pos < ub)] - lb
+    true_pos_hyp = hypergeom.ppf(M=n_hyp, n=pred_pos_hyp, N=pos_hyp, q=q)
+
+    true_pos_u = np.full_like(pred_pos[pred_pos >= ub], pos)
+    true_pos_l = pred_pos[lb >= pred_pos]
+    true_pos = np.concatenate((true_pos_u, true_pos_hyp + lb, true_pos_l))
 
     return true_pos / pred_pos, true_pos / pos, th
 
 
-def pr_quantile_hypergeom_1(
-    n_samp: int, h0_acc: float, q=0.9, pos_rate=0.5
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    h0_acc_2 = h0_acc / 2
-
-    th = np.arange(n_samp) / n_samp
-
-    pos = int(n_samp * pos_rate)
-    pred_pos = (n_samp * (1 - th)).astype(np.int32)
-
-    pred_pos_hyp = (
-        pred_pos[(h0_acc_2 * n_samp < pred_pos) & (pred_pos < (1 - h0_acc_2) * n_samp)]
-        - h0_acc_2 * n_samp
-    )
-
-    true_pos_hyp = scipy.stats.hypergeom(
-        M=(1 - h0_acc) * n_samp, n=pred_pos_hyp, N=(1 - h0_acc) * pos
-    ).ppf(q)
-
-    true_pos = np.concatenate(
-        (
-            np.full_like(pred_pos[pred_pos >= (1 - h0_acc_2) * n_samp], pos),
-            h0_acc_2 * n_samp + true_pos_hyp,
-            pred_pos[h0_acc_2 * n_samp >= pred_pos],
-        )
-    )
-
-    return true_pos / pred_pos, true_pos / pos, th
+__all__ = [
+    "pr_quantile_hypergeom",
+    "pr_quantile_interp",
+    "pr_quantile_binom",
+    "plot_simulations",
+    "run_simulations",
+    "pr_curve",
+]
