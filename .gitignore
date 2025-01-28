@@ -5,6 +5,7 @@
 # build output
 dist
 build
+*.egg-info
 
 # python environment
 .python-version
