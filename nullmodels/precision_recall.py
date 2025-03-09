@@ -1,17 +1,15 @@
 import numpy as np
+import pandas as pd
 
-from scipy.stats import binom, hypergeom
-from plotnine import aes, geom_step, ggplot, labs
+from scipy.stats import hypergeom
+from plotnine import aes, geom_step
 
 
-def run_simulations(
-    n_sim: int,
-    n_samp: int,
-    pos_rate=0.5,
-    h0_acc=0.0,
-) -> tuple[np.ndarray, np.ndarray]:
+def geom_pr_simulate(
+    n_sim: int, n_samp: int, pos_rate=0.5, h0_correct=0.0, q=None, method="tail"
+) -> geom_step:
     """
-    Simulate nullmodels.
+    Simulate and plot precision recall curves
 
     Parameters
     ----------
@@ -19,76 +17,68 @@ def run_simulations(
         Number of simulations.
     n_samp : integer
         Number of samples in each simulation.
-    pos_rate : float
-        Proporion of positive classes in population.
-        Must be between 0 and 1, default is 0.5.
+    pos_rate : float, default 0.5
+        Proporion of positive classes in population. Must be between 0 and 1.
+    h0_correct : float, default 0.0
+        Proporion of samples nullmodel can correctly handle.
+    q : float, default None
+        Quantile of curves to plot.
+    method : {'tail', 'body'}, default 'tail'
+        Score randomization method
 
     Returns
     -------
-    (y_true, y_scores) : tuple
-        Tuple of true labels with shape (n_samp,) and simulated nullmodel
-        scores with shape (n_sim, n_samp).
+    geom : geom_step
+        ggplot geometry with precision recall curves
     """
-
-    def __randomize_score(init_score):
-        h0_acc_2 = h0_acc / 2
-        lb = int(h0_acc_2 * n_samp)
-        ub = int((1 - h0_acc_2) * n_samp)
-        init_score[lb : ub + 1] = np.random.permutation(init_score[lb : ub + 1])
-        return init_score
-
-    n_pos = int(pos_rate * n_samp)
-    n_neg = n_samp - n_pos
-
-    init_scores = np.tile(np.linspace(0, 1, num=n_samp), n_sim).reshape((n_sim, n_samp))
-    y_scores = np.array([__randomize_score(s) for s in init_scores])
-    y_true = np.repeat((0, 1), (n_neg, n_pos))
-
-    return y_true, y_scores
-
-
-def plot_simulations(
-    n_sim: int,
-    n_samp: int,
-    pos_rate=0.5,
-    q=None,
-    h0_acc=0.0,
-) -> ggplot:
-    """
-    Simulate and plot nullmodels.
-
-    Parameters
-    ----------
-    n_sim : integer
-        Number of simulations.
-    n_samp : integer
-        Number of samples in each simulation.
-    pos_rate : float
-        Proporion of positive classes in population.
-        Must be between 0 and 1, default is 0.5.
-    q : float
-        Quantile of curves to plot, default is None.
-
-    Returns
-    -------
-    fig : ggplot
-        ggplot figure with simulations
-    """
-    y_true, y_scores = run_simulations(n_sim, n_samp, pos_rate, h0_acc=h0_acc)
-    simulated_curves = [pr_curve(y_true, y_s) for y_s in y_scores]
-
-    g = ggplot() + labs(x="recall", y="precision")
+    y_true, y_scores = __simulate(n_sim, n_samp, pos_rate, h0_correct, method)
+    simulated_curves = [pr_curve(y_true, y_s)[:2] for y_s in y_scores]
 
     if q is not None:
-        prec_q, rec_q = pr_quantile_interp(simulated_curves, q)
-        g += geom_step(aes(rec_q, prec_q))
+        p, r = pr_quantile_interp(simulated_curves, q)
+        df = pd.DataFrame({"precision": p, "recall": r})
+        return geom_step(mapping=aes("recall", "precision"), data=df)
     else:
-        shapes = [c[0].shape[0] for c in simulated_curves]
-        group = np.repeat(np.arange(n_sim), shapes)
-        precs, recs, _ = np.hstack(simulated_curves)
-        g += geom_step(aes(recs, precs, group=group), alpha=1 / n_sim)
+        p, r = np.hstack(simulated_curves)
+        g = np.repeat(np.arange(n_sim), n_samp)
+        df = pd.DataFrame({"precision": p, "recall": r, "group": g})
+        return geom_step(
+            mapping=aes("recall", "precision", group="group"),
+            data=df,
+            alpha=max(0.05, 1 / n_sim),
+        )
 
-    return g
+
+def geom_pr_hypergeom(
+    n_samp: int, pos_rate=0.5, h0_correct=0.0, q=0.9, method="tail"
+) -> geom_step:
+    """
+    Compute and plot precision recall curve
+
+    Parameters
+    ----------
+    n_samp : integer
+        Number of samples in each simulation.
+    pos_rate : float, default 0.5
+        Proporion of positive classes in population. Must be between 0 and 1.
+    h0_correct : float, default 0.5
+        Proporion of samples nullmodel can correctly handle.
+    q : float, default 0.9
+        Quantile of curves to plot.
+    method : {'tail', 'body'}, default 'tail'
+        Score randomization method
+
+    Returns
+    -------
+    geom : geom_step
+        ggplot geometry with precision recall curve
+    """
+    p, r, _ = pr_quantile_hypergeom(
+        n_samp, h0_correct=h0_correct, q=q, pos_rate=pos_rate, method=method
+    )
+
+    df = pd.DataFrame({"precision": p, "recall": r})
+    return geom_step(aes("recall", "precision"), data=df)
 
 
 def pr_curve(
@@ -99,16 +89,19 @@ def pr_curve(
 
     Parameters
     ----------
-    y_true : array-like
-        Array with true labels.
-        Values must be 1 or 0.
-    y_score : array-like
-        Probability estimates of positive class.
+    y_true : ndarray
+        Array with true labels. Values must be 1 or 0.
+    y_score : ndarray
+        Probability score estimates of positive class.
 
     Returns
     -------
-    (precision, recall, thresholds) : tuple
-        Precision recall points at given classification thresholds.
+    precision : ndarray
+        Precision values.
+    recall : ndarray
+        Recall values.
+    threshold : ndarray
+        Thresholds for precision-recall points.
     """
     thresold_pred = np.less_equal.outer(y_score, y_score)
 
@@ -127,16 +120,17 @@ def pr_quantile_interp(
 
     Parameters
     ----------
-    curves : array
+    curves : ndarray
         Array of (precision, recall) tuples.
-    q : float
-        Quantile, default is 0.9.
+    q : float, default 0.9
+        Quantile.
 
     Returns
     -------
-    (precision, recall) : tuple
-        Precision recall curve, with precision = q-th quantile of precisions
-        and recall = interpolation knots.
+    precision : ndarray
+        q-th quantile of curve precisions
+    recall : ndarray
+        Interpolation knots.
     """
 
     def __decreasing(p, r):
@@ -150,38 +144,12 @@ def pr_quantile_interp(
     return np.quantile(interps, q=q, axis=0), knots
 
 
-def pr_quantile_binom(
-    n_samp: int, q=0.9, pos_rate=0.5
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """
-    Approximate q-th quantile of precision recall curve with binomial
-    distribution
-
-    Parameters
-    ----------
-    n_samp: integer
-        Number of samples
-    q : float
-        Quantile, default is 0.9.
-    pos_rate : float
-        Proporion of positive classes in population.
-        Must be between 0 and 1, default is 0.5.
-
-    Returns
-    -------
-    (precision, recall, threshold) : tuple
-        Precision-recall curve points at given thresholds.
-    """
-    th = np.arange(n_samp) / n_samp
-    pos = int(n_samp * pos_rate)
-    pred_pos = (n_samp * (1 - th)).astype(np.int32)
-    true_pos = binom.ppf(n=pred_pos, p=pos_rate, q=q)
-
-    return true_pos / pred_pos, true_pos / pos, th
-
-
 def pr_quantile_hypergeom(
-    n_samp: int, h0_acc=0.0, q=0.9, pos_rate=0.5
+    n_samp: int,
+    q=0.9,
+    pos_rate=0.5,
+    h0_correct=0.0,
+    method="tail",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Compute q-th quantile of precision recall curve with hypergeometric
@@ -191,25 +159,46 @@ def pr_quantile_hypergeom(
     ----------
     n_samp: integer
         Number of samples
-    q : float
-        Quantile, default is 0.9.
-    pos_rate : float
-        Proporion of positive classes in population.
-        Must be between 0 and 1, default is 0.5.
+    q : float, default 0.9
+        Quantile.
+    pos_rate : float, default 0.5
+        Proporion of positive classes in population. Must be between 0 and 1.
+    method : {'tail', 'body'}, default 'tail'
+        Score randomization method
 
     Returns
     -------
-    (precision, recall, threshold) : tuple
-        Precision-recall curve points at given thresholds.
+    precision : ndarray of shape (n_samp,)
+        Precision values.
+    recall : ndarray of shape (n_samp,)
+        Recall values.
+    threshold : ndarray of shape (n_samp,)
+        Thresholds for precision-recall points.
     """
+
+    if method == "tail":
+        return __pr_hypergeom_tail(n_samp, q, pos_rate, h0_correct)
+    elif method == "body":
+        raise NotImplementedError("Method 'body' is not implemented yet!")
+        # return __pr_hypergeom_body(n_samp, q, pos_rate, h0_correct)
+    else:
+        raise ValueError(f"Invailid method, got '{method}', should be 'tail' or 'body'")
+
+
+def __pr_hypergeom_tail(
+    n_samp: int,
+    q=0.9,
+    pos_rate=0.5,
+    h0_correct=0.0,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     th = np.arange(n_samp) / n_samp
     pos = int(n_samp * pos_rate)
     pred_pos = (n_samp * (1 - th)).astype(np.int32)
 
-    lb = h0_acc / 2 * n_samp
-    ub = (1 - h0_acc / 2) * n_samp
-    n_hyp = (1 - h0_acc) * n_samp
-    pos_hyp = (1 - h0_acc) * pos
+    lb = h0_correct / 2 * n_samp
+    ub = (1 - h0_correct / 2) * n_samp
+    n_hyp = (1 - h0_correct) * n_samp
+    pos_hyp = (1 - h0_correct) * pos
 
     pred_pos_hyp = pred_pos[(lb < pred_pos) & (pred_pos < ub)] - lb
     true_pos_hyp = hypergeom.ppf(M=n_hyp, n=pred_pos_hyp, N=pos_hyp, q=q)
@@ -221,11 +210,98 @@ def pr_quantile_hypergeom(
     return true_pos / pred_pos, true_pos / pos, th
 
 
+def __pr_hypergeom_body(
+    n_samp: int,
+    q=0.9,
+    pos_rate=0.5,
+    h0_correct=0.0,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    th = np.arange(n_samp) / n_samp
+    pos = int(n_samp * pos_rate)
+    pred_pos = (n_samp * (1 - th)).astype(np.int32)
+
+    n_hyp = (1 - h0_correct) * n_samp
+    pos_hyp = (1 - h0_correct) * pos
+    idx_hyp = np.random.choice(n_samp, int(n_hyp), replace=False)
+
+    pred_pos_hyp = pred_pos[idx_hyp] - ...
+    true_pos_hyp = hypergeom.ppf(M=n_hyp, n=pred_pos_hyp, N=pos_hyp, q=q)
+
+    true_pos = ...
+
+    return true_pos / pred_pos, true_pos / pos, th
+
+
+def __simulate(
+    n_sim: int,
+    n_samp: int,
+    pos_rate=0.5,
+    h0_correct=0.0,
+    method="tail",
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Simulate nullmodels.
+
+    Parameters
+    ----------
+    n_sim : integer
+        Number of simulations.
+    n_samp : integer
+        Number of samples in each simulation.
+    pos_rate : float, default 0.5
+        Proporion of positive classes in population. Must be between 0 and 1.
+    h0_correct : float, default 0.0
+        Proporion of samples nullmodel can correctly handle.
+    method : {'tail', 'body'}, default 'tail'
+        Score randomization method
+
+    Returns
+    -------
+    y_true : ndarray of shape (n_samp,)
+        True labels
+    y_scores : ndarray of shape (n_sim, n_samp).
+        Simulated scores
+
+    Raises
+    ------
+    ValueError
+        When incorrect ``method`` is provided
+    """
+
+    def __randomize_score_tail(init_score):
+        h0_correct_2 = h0_correct / 2
+        lb = int(h0_correct_2 * n_samp)
+        ub = int((1 - h0_correct_2) * n_samp)
+        init_score[lb : ub + 1] = np.random.permutation(init_score[lb : ub + 1])
+        return init_score
+
+    def __randomize_score_body(init_score):
+        subs_size = int(n_samp * (1 - h0_correct))
+        subs_idx = np.random.choice(n_samp, subs_size, replace=False)
+        init_score[subs_idx] = np.random.permutation(init_score[subs_idx])
+        return init_score
+
+    if method == "tail":
+        method_f = __randomize_score_tail
+    elif method == "body":
+        method_f = __randomize_score_body
+    else:
+        raise ValueError(f"Invailid method: got '{method}', should be 'tail' or 'body'")
+
+    n_pos = int(pos_rate * n_samp)
+    n_neg = n_samp - n_pos
+
+    init_scores = np.tile(np.linspace(0, 1, num=n_samp), n_sim).reshape((n_sim, n_samp))
+    y_scores = np.apply_along_axis(method_f, axis=1, arr=init_scores)
+    y_true = np.repeat((0, 1), (n_neg, n_pos))
+
+    return y_true, y_scores
+
+
 __all__ = [
     "pr_quantile_hypergeom",
     "pr_quantile_interp",
-    "pr_quantile_binom",
-    "plot_simulations",
-    "run_simulations",
+    "geom_pr_hypergeom",
+    "geom_pr_simulate",
     "pr_curve",
 ]
