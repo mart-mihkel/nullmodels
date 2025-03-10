@@ -18,3 +18,13 @@ jupyter = [
 
 [project.urls]
 source = "https://github.com/mart-mihkel/nullmodels"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = ["nullmodels"]
+exclude = ["notebooks"]
