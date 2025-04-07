@@ -177,10 +177,13 @@ def pr_quantile_hypergeom(
     """
 
     if method == "tail":
-        return __pr_hypergeom_tail(n_samp, q, pos_rate, h0_correct)
+        return __pr_hypergeom_tail(
+            n_samp=n_samp, q=q, pos_rate=pos_rate, h0_correct=h0_correct
+        )
     elif method == "body":
-        raise NotImplementedError("Method 'body' is not implemented yet!")
-        # return __pr_hypergeom_body(n_samp, q, pos_rate, h0_correct)
+        return __pr_hypergeom_body(
+            n_samp=n_samp, q=q, pos_rate=pos_rate, h0_correct=h0_correct
+        )
     else:
         raise ValueError(f"Invailid method, got '{method}', should be 'tail' or 'body'")
 
@@ -191,6 +194,28 @@ def __pr_hypergeom_tail(
     pos_rate=0.5,
     h0_correct=0.0,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Compute q-th quantile of precision recall curve with hypergeometric
+    distribution with tail method
+
+    Parameters
+    ----------
+    n_samp: integer
+        Number of samples
+    q : float, default 0.9
+        Quantile.
+    pos_rate : float, default 0.5
+        Proporion of positive classes in population. Must be between 0 and 1.
+
+    Returns
+    -------
+    precision : ndarray of shape (n_samp,)
+        Precision values.
+    recall : ndarray of shape (n_samp,)
+        Recall values.
+    threshold : ndarray of shape (n_samp,)
+        Thresholds for precision-recall points.
+    """
     th = np.arange(n_samp) / n_samp
     pos = int(n_samp * pos_rate)
     pred_pos = (n_samp * (1 - th)).astype(np.int32)
@@ -203,6 +228,8 @@ def __pr_hypergeom_tail(
     pred_pos_hyp = pred_pos[(lb < pred_pos) & (pred_pos < ub)] - lb
     true_pos_hyp = hypergeom.ppf(M=n_hyp, n=pred_pos_hyp, N=pos_hyp, q=q)
 
+    # TODO: upper and lower bound true positives might be incorrect with
+    #       certain edge case values of ``pos_rate``
     true_pos_u = np.full_like(pred_pos[pred_pos >= ub], pos)
     true_pos_l = pred_pos[lb >= pred_pos]
     true_pos = np.concatenate((true_pos_u, true_pos_hyp + lb, true_pos_l))
@@ -216,6 +243,35 @@ def __pr_hypergeom_body(
     pos_rate=0.5,
     h0_correct=0.0,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Compute q-th quantile of precision recall curve with hypergeometric
+    distribution with body method
+
+    Parameters
+    ----------
+    n_samp: integer
+        Number of samples
+    q : float, default 0.9
+        Quantile.
+    pos_rate : float, default 0.5
+        Proporion of positive classes in population. Must be between 0 and 1.
+
+    Returns
+    -------
+    precision : ndarray of shape (n_samp,)
+        Precision values.
+    recall : ndarray of shape (n_samp,)
+        Recall values.
+    threshold : ndarray of shape (n_samp,)
+        Thresholds for precision-recall points.
+
+    Raises
+    ------
+    NotImplementedError
+        Method 'body' is not implemented
+    """
+    raise NotImplementedError("Method 'body' is not implemented!")
+
     th = np.arange(n_samp) / n_samp
     pos = int(n_samp * pos_rate)
     pred_pos = (n_samp * (1 - th)).astype(np.int32)
@@ -227,7 +283,8 @@ def __pr_hypergeom_body(
     pred_pos_hyp = pred_pos[idx_hyp] - ...
     true_pos_hyp = hypergeom.ppf(M=n_hyp, n=pred_pos_hyp, N=pos_hyp, q=q)
 
-    true_pos = ...
+    true_pos = np.minimum(pred_pos, pos)
+    true_pos[idx_hyp] = true_pos_hyp
 
     return true_pos / pred_pos, true_pos / pos, th
 

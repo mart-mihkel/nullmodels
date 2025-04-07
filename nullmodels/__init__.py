@@ -1,2 +1,2 @@
 from .precision_recall import *
-from .sampling import *
+from .relative import *
