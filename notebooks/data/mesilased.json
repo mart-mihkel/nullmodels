@@ -1,0 +1,3419 @@
+{
+  "text": "2023. aasta suvel külastas bioloog Mari-Liis Saar Jõgevamaa Mesinduskeskust, et uurida kohalike mesinikute kasutatavaid meetodeid. Ta viibis kaks nädalat Kuremaa külas, kus tal oli võimalus töötada koos kogenud mesiniku Peeter Põlluga. Üheskoos jälgiti mesilasperede käitumist mitmes Langstrothi tüüpi tarus. Projekti rahastas Keskkonnainvesteeringute Keskus ning selle eesmärk oli hinnata varroalesta mõju mesilaste tervisele Eesti tingimustes. Uuringu tulemused esitati Tartu Ülikooli teaduskonverentsil.",
+  "meta": {},
+  "layers": [
+    {
+      "name": "tokens",
+      "attributes": [],
+      "secondary_attributes": [],
+      "parent": null,
+      "enveloping": null,
+      "ambiguous": false,
+      "serialisation_module": null,
+      "meta": {},
+      "spans": [
+        {
+          "base_span": [
+            0,
+            4
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            4,
+            5
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            6,
+            11
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            12,
+            17
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            18,
+            26
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            27,
+            34
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            35,
+            39
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            39,
+            40
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            40,
+            44
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            45,
+            49
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            50,
+            59
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            60,
+            75
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            75,
+            76
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            77,
+            79
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            80,
+            86
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            87,
+            95
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            96,
+            106
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            107,
+            119
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            120,
+            129
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            129,
+            130
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            131,
+            133
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            134,
+            140
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            141,
+            145
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            146,
+            153
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            154,
+            161
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            162,
+            167
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            167,
+            168
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            169,
+            172
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            173,
+            176
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            177,
+            180
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            181,
+            189
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            190,
+            197
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            198,
+            202
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            203,
+            210
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            211,
+            219
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            220,
+            226
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            227,
+            234
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            234,
+            235
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            236,
+            244
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            245,
+            252
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            253,
+            266
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            267,
+            276
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            277,
+            283
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            284,
+            295
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            296,
+            301
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            302,
+            307
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            307,
+            308
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            309,
+            317
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            318,
+            326
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            327,
+            351
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            352,
+            358
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            359,
+            363
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            364,
+            369
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            370,
+            377
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            378,
+            381
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            382,
+            389
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            390,
+            401
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            402,
+            406
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            407,
+            416
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            417,
+            426
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            427,
+            432
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            433,
+            444
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            444,
+            445
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            446,
+            453
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            454,
+            463
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            464,
+            471
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            472,
+            477
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            478,
+            486
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            487,
+            505
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            505,
+            506
+          ],
+          "annotations": [
+            {}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "compound_tokens",
+      "attributes": [
+        "type",
+        "normalized"
+      ],
+      "secondary_attributes": [],
+      "parent": null,
+      "enveloping": "tokens",
+      "ambiguous": false,
+      "serialisation_module": null,
+      "meta": {},
+      "spans": [
+        {
+          "base_span": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "annotations": [
+            {
+              "type": [
+                "numeric"
+              ],
+              "normalized": "2023."
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              35,
+              39
+            ],
+            [
+              39,
+              40
+            ],
+            [
+              40,
+              44
+            ]
+          ],
+          "annotations": [
+            {
+              "type": [
+                "hyphenation"
+              ],
+              "normalized": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "words",
+      "attributes": [
+        "normalized_form"
+      ],
+      "secondary_attributes": [],
+      "parent": null,
+      "enveloping": null,
+      "ambiguous": true,
+      "serialisation_module": null,
+      "meta": {},
+      "spans": [
+        {
+          "base_span": [
+            0,
+            5
+          ],
+          "annotations": [
+            {
+              "normalized_form": "2023."
+            }
+          ]
+        },
+        {
+          "base_span": [
+            6,
+            11
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            12,
+            17
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            18,
+            26
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            27,
+            34
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            35,
+            44
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            45,
+            49
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            50,
+            59
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            60,
+            75
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            75,
+            76
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            77,
+            79
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            80,
+            86
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            87,
+            95
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            96,
+            106
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            107,
+            119
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            120,
+            129
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            129,
+            130
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            131,
+            133
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            134,
+            140
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            141,
+            145
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            146,
+            153
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            154,
+            161
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            162,
+            167
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            167,
+            168
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            169,
+            172
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            173,
+            176
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            177,
+            180
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            181,
+            189
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            190,
+            197
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            198,
+            202
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            203,
+            210
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            211,
+            219
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            220,
+            226
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            227,
+            234
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            234,
+            235
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            236,
+            244
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            245,
+            252
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            253,
+            266
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            267,
+            276
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            277,
+            283
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            284,
+            295
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            296,
+            301
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            302,
+            307
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            307,
+            308
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            309,
+            317
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            318,
+            326
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            327,
+            351
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            352,
+            358
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            359,
+            363
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            364,
+            369
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            370,
+            377
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            378,
+            381
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            382,
+            389
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            390,
+            401
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            402,
+            406
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            407,
+            416
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            417,
+            426
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            427,
+            432
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            433,
+            444
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            444,
+            445
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            446,
+            453
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            454,
+            463
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            464,
+            471
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            472,
+            477
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            478,
+            486
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            487,
+            505
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        },
+        {
+          "base_span": [
+            505,
+            506
+          ],
+          "annotations": [
+            {
+              "normalized_form": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "estbertner",
+      "attributes": [
+        "nertag"
+      ],
+      "secondary_attributes": [],
+      "parent": null,
+      "enveloping": "words",
+      "ambiguous": false,
+      "serialisation_module": null,
+      "meta": {},
+      "spans": [
+        {
+          "base_span": [
+            [
+              35,
+              44
+            ],
+            [
+              45,
+              49
+            ]
+          ],
+          "annotations": [
+           {
+              "nertag": "PER"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              50,
+              59
+            ],
+            [
+              60,
+              75
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "ORG"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              220,
+              226
+            ],
+            [
+              227,
+              234
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "PER"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              327,
+              351
+            ],
+            [
+              352,
+              358
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "ORG"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              427,
+              432
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "LOC"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              472,
+              477
+            ],
+            [
+              478,
+              486
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "ORG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "morph_analysis",
+      "attributes": [
+        "normalized_text",
+        "lemma",
+        "root",
+        "root_tokens",
+        "ending",
+        "clitic",
+        "form",
+        "partofspeech"
+      ],
+      "secondary_attributes": [],
+      "parent": "words",
+      "enveloping": null,
+      "ambiguous": true,
+      "serialisation_module": null,
+      "meta": {},
+      "spans": [
+        {
+          "base_span": [
+            0,
+            5
+          ],
+          "annotations": [
+            {
+              "normalized_text": "2023.",
+              "lemma": "2023.",
+              "root": "2023.",
+              "root_tokens": [
+                "2023."
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "?",
+              "partofspeech": "O"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            6,
+            11
+          ],
+          "annotations": [
+            {
+              "normalized_text": "aasta",
+              "lemma": "aasta",
+              "root": "aasta",
+              "root_tokens": [
+                "aasta"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            12,
+            17
+          ],
+          "annotations": [
+            {
+              "normalized_text": "suvel",
+              "lemma": "suvi",
+              "root": "suvi",
+              "root_tokens": [
+                "suvi"
+              ],
+              "ending": "l",
+              "clitic": "",
+              "form": "sg ad",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            18,
+            26
+          ],
+          "annotations": [
+            {
+              "normalized_text": "külastas",
+              "lemma": "külastama",
+              "root": "külasta",
+              "root_tokens": [
+                "külasta"
+              ],
+              "ending": "s",
+              "clitic": "",
+              "form": "s",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            27,
+            34
+          ],
+          "annotations": [
+            {
+              "normalized_text": "bioloog",
+              "lemma": "bioloog",
+              "root": "bioloog",
+              "root_tokens": [
+                "bioloog"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            35,
+            44
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Mari-Liis",
+              "lemma": "Mari-Liis",
+              "root": "Mari-Liis",
+              "root_tokens": [
+                "Mari",
+                "Liis"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            45,
+            49
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Saar",
+              "lemma": "Saar",
+              "root": "Saar",
+              "root_tokens": [
+                "Saar"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            50,
+            59
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Jõgevamaa",
+              "lemma": "Jõgevamaa",
+              "root": "Jõgeva_maa",
+              "root_tokens": [
+                "Jõgeva",
+                "maa"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            60,
+            75
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Mesinduskeskust",
+              "lemma": "mesinduskeskus",
+              "root": "mesindus_keskus",
+              "root_tokens": [
+                "mesindus",
+                "keskus"
+              ],
+              "ending": "t",
+              "clitic": "",
+              "form": "sg p",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            75,
+            76
+          ],
+          "annotations": [
+            {
+              "normalized_text": ",",
+              "lemma": ",",
+              "root": ",",
+              "root_tokens": [
+                ","
+              ],
+              "ending": "",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "Z"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            77,
+            79
+          ],
+          "annotations": [
+            {
+              "normalized_text": "et",
+              "lemma": "et",
+              "root": "et",
+              "root_tokens": [
+                "et"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "J"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            80,
+            86
+          ],
+          "annotations": [
+            {
+              "normalized_text": "uurida",
+              "lemma": "uurima",
+              "root": "uuri",
+              "root_tokens": [
+                "uuri"
+              ],
+              "ending": "da",
+              "clitic": "",
+              "form": "da",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            87,
+            95
+          ],
+          "annotations": [
+            {
+              "normalized_text": "kohalike",
+              "lemma": "kohalik",
+              "root": "kohalik",
+              "root_tokens": [
+                "kohalik"
+              ],
+              "ending": "e",
+              "clitic": "",
+              "form": "pl g",
+              "partofspeech": "A"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            96,
+            106
+          ],
+          "annotations": [
+            {
+              "normalized_text": "mesinikute",
+              "lemma": "mesinikute",
+              "root": "mesinikute",
+              "root_tokens": [
+                "mesinikute"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            107,
+            119
+          ],
+          "annotations": [
+            {
+              "normalized_text": "kasutatavaid",
+              "lemma": "kasutatav",
+              "root": "kasutatav",
+              "root_tokens": [
+                "kasutatav"
+              ],
+              "ending": "id",
+              "clitic": "",
+              "form": "pl p",
+              "partofspeech": "A"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            120,
+            129
+          ],
+          "annotations": [
+            {
+              "normalized_text": "meetodeid",
+              "lemma": "meetod",
+              "root": "meetod",
+              "root_tokens": [
+                "meetod"
+              ],
+              "ending": "id",
+              "clitic": "",
+              "form": "pl p",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            129,
+            130
+          ],
+          "annotations": [
+            {
+              "normalized_text": ".",
+              "lemma": ".",
+              "root": ".",
+              "root_tokens": [
+                "."
+              ],
+              "ending": "",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "Z"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            131,
+            133
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Ta",
+              "lemma": "tema",
+              "root": "tema",
+              "root_tokens": [
+                "tema"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "P"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            134,
+            140
+          ],
+          "annotations": [
+            {
+              "normalized_text": "viibis",
+              "lemma": "viibima",
+              "root": "viibi",
+              "root_tokens": [
+                "viibi"
+              ],
+              "ending": "s",
+              "clitic": "",
+              "form": "s",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            141,
+            145
+          ],
+          "annotations": [
+            {
+              "normalized_text": "kaks",
+              "lemma": "kaks",
+              "root": "kaks",
+              "root_tokens": [
+                "kaks"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "N"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            146,
+            153
+          ],
+          "annotations": [
+            {
+              "normalized_text": "nädalat",
+              "lemma": "nädal",
+              "root": "nädal",
+              "root_tokens": [
+                "nädal"
+              ],
+              "ending": "t",
+              "clitic": "",
+              "form": "sg p",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            154,
+            161
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Kuremaa",
+              "lemma": "kuremaa",
+              "root": "kure_maa",
+              "root_tokens": [
+                "kure",
+                "maa"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            162,
+            167
+          ],
+          "annotations": [
+            {
+              "normalized_text": "külas",
+              "lemma": "küla",
+              "root": "küla",
+              "root_tokens": [
+                "küla"
+              ],
+              "ending": "s",
+              "clitic": "",
+              "form": "sg in",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            167,
+            168
+          ],
+          "annotations": [
+            {
+              "normalized_text": ",",
+              "lemma": ",",
+              "root": ",",
+              "root_tokens": [
+                ","
+              ],
+              "ending": "",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "Z"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            169,
+            172
+          ],
+          "annotations": [
+            {
+              "normalized_text": "kus",
+              "lemma": "kus",
+              "root": "kus",
+              "root_tokens": [
+                "kus"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "D"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            173,
+            176
+          ],
+          "annotations": [
+            {
+              "normalized_text": "tal",
+              "lemma": "tema",
+              "root": "tema",
+              "root_tokens": [
+                "tema"
+              ],
+              "ending": "l",
+              "clitic": "",
+              "form": "sg ad",
+              "partofspeech": "P"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            177,
+            180
+          ],
+          "annotations": [
+            {
+              "normalized_text": "oli",
+              "lemma": "olema",
+              "root": "ole",
+              "root_tokens": [
+                "ole"
+              ],
+              "ending": "i",
+              "clitic": "",
+              "form": "s",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            181,
+            189
+          ],
+          "annotations": [
+            {
+              "normalized_text": "võimalus",
+              "lemma": "võimalus",
+              "root": "võimalus",
+              "root_tokens": [
+                "võimalus"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            190,
+            197
+          ],
+          "annotations": [
+            {
+              "normalized_text": "töötada",
+              "lemma": "töötama",
+              "root": "tööta",
+              "root_tokens": [
+                "tööta"
+              ],
+              "ending": "da",
+              "clitic": "",
+              "form": "da",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            198,
+            202
+          ],
+          "annotations": [
+            {
+              "normalized_text": "koos",
+              "lemma": "koos",
+              "root": "koos",
+              "root_tokens": [
+                "koos"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "K"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            203,
+            210
+          ],
+          "annotations": [
+            {
+              "normalized_text": "kogenud",
+              "lemma": "kogenud",
+              "root": "kogenud",
+              "root_tokens": [
+                "kogenud"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "A"
+            },
+            {
+              "normalized_text": "kogenud",
+              "lemma": "kogema",
+              "root": "koge",
+              "root_tokens": [
+                "koge"
+              ],
+              "ending": "nud",
+              "clitic": "",
+              "form": "nud",
+              "partofspeech": "V"
+            },
+            {
+              "normalized_text": "kogenud",
+              "lemma": "kogenud",
+              "root": "kogenud",
+              "root_tokens": [
+                "kogenud"
+              ],
+              "ending": "d",
+              "clitic": "",
+              "form": "pl n",
+              "partofspeech": "A"
+            },
+            {
+              "normalized_text": "kogenud",
+              "lemma": "kogenud",
+              "root": "kogenud",
+              "root_tokens": [
+                "kogenud"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "A"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            211,
+            219
+          ],
+          "annotations": [
+            {
+              "normalized_text": "mesiniku",
+              "lemma": "mesinik",
+              "root": "mesinik",
+              "root_tokens": [
+                "mesinik"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            220,
+            226
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Peeter",
+              "lemma": "Peeter",
+              "root": "Peeter",
+              "root_tokens": [
+                "Peeter"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            227,
+            234
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Põlluga",
+              "lemma": "Põld",
+              "root": "Põld",
+              "root_tokens": [
+                "Põld"
+              ],
+              "ending": "ga",
+              "clitic": "",
+              "form": "sg kom",
+              "partofspeech": "H"
+            },
+            {
+              "normalized_text": "Põlluga",
+              "lemma": "Põllu",
+              "root": "Põllu",
+              "root_tokens": [
+                "Põllu"
+              ],
+              "ending": "ga",
+              "clitic": "",
+              "form": "sg kom",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            234,
+            235
+          ],
+          "annotations": [
+            {
+              "normalized_text": ".",
+              "lemma": ".",
+              "root": ".",
+              "root_tokens": [
+                "."
+              ],
+              "ending": "",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "Z"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            236,
+            244
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Üheskoos",
+              "lemma": "üheskoos",
+              "root": "ühes_koos",
+              "root_tokens": [
+                "ühes",
+                "koos"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "D"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            245,
+            252
+          ],
+          "annotations": [
+            {
+              "normalized_text": "jälgiti",
+              "lemma": "jälgima",
+              "root": "jälgi",
+              "root_tokens": [
+                "jälgi"
+              ],
+              "ending": "ti",
+              "clitic": "",
+              "form": "ti",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            253,
+            266
+          ],
+          "annotations": [
+            {
+              "normalized_text": "mesilasperede",
+              "lemma": "mesilaspere",
+              "root": "mesilas_pere",
+              "root_tokens": [
+                "mesilas",
+                "pere"
+              ],
+              "ending": "de",
+              "clitic": "",
+              "form": "pl g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            267,
+            276
+          ],
+          "annotations": [
+            {
+              "normalized_text": "käitumist",
+              "lemma": "käitumine",
+              "root": "käitumine",
+              "root_tokens": [
+                "käitumine"
+              ],
+              "ending": "t",
+              "clitic": "",
+              "form": "sg p",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            277,
+            283
+          ],
+          "annotations": [
+            {
+              "normalized_text": "mitmes",
+              "lemma": "mitu",
+              "root": "mitu",
+              "root_tokens": [
+                "mitu"
+              ],
+              "ending": "s",
+              "clitic": "",
+              "form": "sg in",
+              "partofspeech": "P"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            284,
+            295
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Langstrothi",
+              "lemma": "Langstroth",
+              "root": "Langstroth",
+              "root_tokens": [
+                "Langstroth"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "adt",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            296,
+            301
+          ],
+          "annotations": [
+            {
+              "normalized_text": "tüüpi",
+              "lemma": "tüüp",
+              "root": "tüüp",
+              "root_tokens": [
+                "tüüp"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg p",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            302,
+            307
+          ],
+          "annotations": [
+            {
+              "normalized_text": "tarus",
+              "lemma": "taru",
+              "root": "taru",
+              "root_tokens": [
+                "taru"
+              ],
+              "ending": "s",
+              "clitic": "",
+              "form": "sg in",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            307,
+            308
+          ],
+          "annotations": [
+            {
+              "normalized_text": ".",
+              "lemma": ".",
+              "root": ".",
+              "root_tokens": [
+                "."
+              ],
+              "ending": "",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "Z"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            309,
+            317
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Projekti",
+              "lemma": "projekt",
+              "root": "projekt",
+              "root_tokens": [
+                "projekt"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            318,
+            326
+          ],
+          "annotations": [
+            {
+              "normalized_text": "rahastas",
+              "lemma": "rahastama",
+              "root": "rahasta",
+              "root_tokens": [
+                "rahasta"
+              ],
+              "ending": "s",
+              "clitic": "",
+              "form": "s",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            327,
+            351
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Keskkonnainvesteeringute",
+              "lemma": "keskkonnainvesteering",
+              "root": "keskkonna_investeering",
+              "root_tokens": [
+                "keskkonna",
+                "investeering"
+              ],
+              "ending": "te",
+              "clitic": "",
+              "form": "pl g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            352,
+            358
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Keskus",
+              "lemma": "keskus",
+              "root": "keskus",
+              "root_tokens": [
+                "keskus"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            359,
+            363
+          ],
+          "annotations": [
+            {
+              "normalized_text": "ning",
+              "lemma": "ning",
+              "root": "ning",
+              "root_tokens": [
+                "ning"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "J"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            364,
+            369
+          ],
+          "annotations": [
+            {
+              "normalized_text": "selle",
+              "lemma": "see",
+              "root": "see",
+              "root_tokens": [
+                "see"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "P"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            370,
+            377
+          ],
+          "annotations": [
+            {
+              "normalized_text": "eesmärk",
+              "lemma": "eesmärk",
+              "root": "ees_märk",
+              "root_tokens": [
+                "ees",
+                "märk"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg n",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            378,
+            381
+          ],
+          "annotations": [
+            {
+              "normalized_text": "oli",
+              "lemma": "olema",
+              "root": "ole",
+              "root_tokens": [
+                "ole"
+              ],
+              "ending": "i",
+              "clitic": "",
+              "form": "s",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            382,
+            389
+          ],
+          "annotations": [
+            {
+              "normalized_text": "hinnata",
+              "lemma": "hindama",
+              "root": "hinda",
+              "root_tokens": [
+                "hinda"
+              ],
+              "ending": "ta",
+              "clitic": "",
+              "form": "da",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            390,
+            401
+          ],
+          "annotations": [
+            {
+              "normalized_text": "varroalesta",
+              "lemma": "varroalest",
+              "root": "varr_oa_lest",
+              "root_tokens": [
+                "varr",
+                "oa",
+                "lest"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            402,
+            406
+          ],
+          "annotations": [
+            {
+              "normalized_text": "mõju",
+              "lemma": "mõju",
+              "root": "mõju",
+              "root_tokens": [
+                "mõju"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            407,
+            416
+          ],
+          "annotations": [
+            {
+              "normalized_text": "mesilaste",
+              "lemma": "mesilane",
+              "root": "mesilane",
+              "root_tokens": [
+                "mesilane"
+              ],
+              "ending": "te",
+              "clitic": "",
+              "form": "pl g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            417,
+            426
+          ],
+          "annotations": [
+            {
+              "normalized_text": "tervisele",
+              "lemma": "tervis",
+              "root": "tervis",
+              "root_tokens": [
+                "tervis"
+              ],
+              "ending": "le",
+              "clitic": "",
+              "form": "sg all",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            427,
+            432
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Eesti",
+              "lemma": "Eesti",
+              "root": "Eesti",
+              "root_tokens": [
+                "Eesti"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            433,
+            444
+          ],
+          "annotations": [
+            {
+              "normalized_text": "tingimustes",
+              "lemma": "tingimus",
+              "root": "tingimus",
+              "root_tokens": [
+                "tingimus"
+              ],
+              "ending": "tes",
+              "clitic": "",
+              "form": "pl in",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            444,
+            445
+          ],
+          "annotations": [
+            {
+              "normalized_text": ".",
+              "lemma": ".",
+              "root": ".",
+              "root_tokens": [
+                "."
+              ],
+              "ending": "",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "Z"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            446,
+            453
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Uuringu",
+              "lemma": "uuring",
+              "root": "uuring",
+              "root_tokens": [
+                "uuring"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            454,
+            463
+          ],
+          "annotations": [
+            {
+              "normalized_text": "tulemused",
+              "lemma": "tulemus",
+              "root": "tulemus",
+              "root_tokens": [
+                "tulemus"
+              ],
+              "ending": "d",
+              "clitic": "",
+              "form": "pl n",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            464,
+            471
+          ],
+          "annotations": [
+            {
+              "normalized_text": "esitati",
+              "lemma": "esitama",
+              "root": "esita",
+              "root_tokens": [
+                "esita"
+              ],
+              "ending": "ti",
+              "clitic": "",
+              "form": "ti",
+              "partofspeech": "V"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            472,
+            477
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Tartu",
+              "lemma": "Tartu",
+              "root": "Tartu",
+              "root_tokens": [
+                "Tartu"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            478,
+            486
+          ],
+          "annotations": [
+            {
+              "normalized_text": "Ülikooli",
+              "lemma": "Ülikool",
+              "root": "Üli_kool",
+              "root_tokens": [
+                "Üli",
+                "kool"
+              ],
+              "ending": "0",
+              "clitic": "",
+              "form": "sg g",
+              "partofspeech": "H"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            487,
+            505
+          ],
+          "annotations": [
+            {
+              "normalized_text": "teaduskonverentsil",
+              "lemma": "teaduskonverents",
+              "root": "teadus_konverents",
+              "root_tokens": [
+                "teadus",
+                "konverents"
+              ],
+              "ending": "l",
+              "clitic": "",
+              "form": "sg ad",
+              "partofspeech": "S"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            505,
+            506
+          ],
+          "annotations": [
+            {
+              "normalized_text": ".",
+              "lemma": ".",
+              "root": ".",
+              "root_tokens": [
+                "."
+              ],
+              "ending": "",
+              "clitic": "",
+              "form": "",
+              "partofspeech": "Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ner",
+      "attributes": [
+        "nertag"
+      ],
+      "secondary_attributes": [],
+      "parent": null,
+      "enveloping": "words",
+      "ambiguous": false,
+      "serialisation_module": null,
+      "meta": {},
+      "spans": [
+        {
+          "base_span": [
+            [
+              35,
+              44
+            ],
+            [
+              45,
+              49
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "LOC"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              154,
+              161
+            ],
+            [
+              162,
+              167
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "LOC"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              220,
+              226
+            ],
+            [
+              227,
+              234
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "PER"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              327,
+              351
+            ],
+            [
+              352,
+              358
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "ORG"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              427,
+              432
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "LOC"
+            }
+          ]
+        },
+        {
+          "base_span": [
+            [
+              472,
+              477
+            ],
+            [
+              478,
+              486
+            ]
+          ],
+          "annotations": [
+            {
+              "nertag": "ORG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sentences",
+      "attributes": [],
+      "secondary_attributes": [],
+      "parent": null,
+      "enveloping": "words",
+      "ambiguous": false,
+      "serialisation_module": null,
+      "meta": {},
+      "spans": [
+        {
+          "base_span": [
+            [
+              0,
+              5
+            ],
+            [
+              6,
+              11
+            ],
+            [
+              12,
+              17
+            ],
+            [
+              18,
+              26
+            ],
+            [
+              27,
+              34
+            ],
+            [
+              35,
+              44
+            ],
+            [
+              45,
+              49
+            ],
+            [
+              50,
+              59
+            ],
+            [
+              60,
+              75
+            ],
+            [
+              75,
+              76
+            ],
+            [
+              77,
+              79
+            ],
+            [
+              80,
+              86
+            ],
+            [
+              87,
+              95
+            ],
+            [
+              96,
+              106
+            ],
+            [
+              107,
+              119
+            ],
+            [
+              120,
+              129
+            ],
+            [
+              129,
+              130
+            ]
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            [
+              131,
+              133
+            ],
+            [
+              134,
+              140
+            ],
+            [
+              141,
+              145
+            ],
+            [
+              146,
+              153
+            ],
+            [
+              154,
+              161
+            ],
+            [
+              162,
+              167
+            ],
+            [
+              167,
+              168
+            ],
+            [
+              169,
+              172
+            ],
+            [
+              173,
+              176
+            ],
+            [
+              177,
+              180
+            ],
+            [
+              181,
+              189
+            ],
+            [
+              190,
+              197
+            ],
+            [
+              198,
+              202
+            ],
+            [
+              203,
+              210
+            ],
+            [
+              211,
+              219
+            ],
+            [
+              220,
+              226
+            ],
+            [
+              227,
+              234
+            ],
+            [
+              234,
+              235
+            ]
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            [
+              236,
+              244
+            ],
+            [
+              245,
+              252
+            ],
+            [
+              253,
+              266
+            ],
+            [
+              267,
+              276
+            ],
+            [
+              277,
+              283
+            ],
+            [
+              284,
+              295
+            ],
+            [
+              296,
+              301
+            ],
+            [
+              302,
+              307
+            ],
+            [
+              307,
+              308
+            ]
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            [
+              309,
+              317
+            ],
+            [
+              318,
+              326
+            ],
+            [
+              327,
+              351
+            ],
+            [
+              352,
+              358
+            ],
+            [
+              359,
+              363
+            ],
+            [
+              364,
+              369
+            ],
+            [
+              370,
+              377
+            ],
+            [
+              378,
+              381
+            ],
+            [
+              382,
+              389
+            ],
+            [
+              390,
+              401
+            ],
+            [
+              402,
+              406
+            ],
+            [
+              407,
+              416
+            ],
+            [
+              417,
+              426
+            ],
+            [
+              427,
+              432
+            ],
+            [
+              433,
+              444
+            ],
+            [
+              444,
+              445
+            ]
+          ],
+          "annotations": [
+            {}
+          ]
+        },
+        {
+          "base_span": [
+            [
+              446,
+              453
+            ],
+            [
+              454,
+              463
+            ],
+            [
+              464,
+              471
+            ],
+            [
+              472,
+              477
+            ],
+            [
+              478,
+              486
+            ],
+            [
+              487,
+              505
+            ],
+            [
+              505,
+              506
+            ]
+          ],
+          "annotations": [
+            {}
+          ]
+        }
+      ]
+    }
+  ],
+  "relation_layers": []
+}
