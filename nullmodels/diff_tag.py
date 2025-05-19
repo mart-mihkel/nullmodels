@@ -60,7 +60,7 @@ def import_labelstudio(tasks_json: str) -> List[Text]:
     return texts
 
 
-def export_labelstudio(n_samp: int) -> Tuple[str, str]:
+def export_labelstudio(n_samp: int, db_file="diff_tag.db") -> Tuple[str, str]:
     """
     Sample random conflicting nertag annotations, return label studio tasks
     and interfrace
@@ -96,13 +96,13 @@ def export_labelstudio(n_samp: int) -> Tuple[str, str]:
     </View>
     """
 
-    tasks = __sample_label_studio_tasks(n_samp)
+    tasks = __sample_label_studio_tasks(n_samp, db_file)
 
     return iface, tasks
 
 
-def __sample_label_studio_tasks(n_samp: int) -> str:
-    records = __sample_diff_annotations(n_samp)
+def __sample_label_studio_tasks(n_samp: int, db_file="diff_tag.db") -> str:
+    records = __sample_diff_annotations(n_samp, db_file)
     n = len(records)
     if n < n_samp:
         warnings.warn(
@@ -142,7 +142,9 @@ def __sample_label_studio_tasks(n_samp: int) -> str:
     return json.dumps(tasks)
 
 
-def persist_diff_layer(texts: List[Text], layer_a: str, layer_b: str):
+def persist_diff_layer(
+    texts: List[Text], layer_a: str, layer_b: str, db_file="diff_tag.db"
+):
     """
     Find and save records of different annotations between layers in an sqlite
     database
@@ -156,13 +158,15 @@ def persist_diff_layer(texts: List[Text], layer_a: str, layer_b: str):
     layer_b : str
         Second layer to compare, must be present in all texts
     """
-    texts_ids = [(i, t.text) for i, t in enumerate(texts)]
-    diffs = [__collect_layer_diff(t, i, layer_a, layer_b) for i, t in enumerate(texts)]
-    records = sum(diffs, start=[])
+    __setup_db(db_file)
 
-    __setup_db()
-    __persist_raw_texts(texts_ids)
-    __persist_diff_records(records)
+    text_ids = __persist_raw_texts([(t.text,) for t in texts], db_file)
+    diffs = sum(
+        [__collect_layer_diff(t, i, layer_a, layer_b) for i, t in zip(text_ids, texts)],
+        start=[],
+    )
+
+    __persist_diff_records(diffs, db_file)
 
 
 def __collect_layer_diff(
@@ -176,7 +180,7 @@ def __collect_layer_diff(
     text : Text
         Text object with layers `layer_a` and `layer_b`
     text_id : int
-        Text id  # TODO: this is sus
+        Text id
     layer_a : str
         First layer to compare, must be present in `text`
     layer_b : str
@@ -248,12 +252,19 @@ def __sample_diff_annotations(
     return records
 
 
-def __persist_raw_texts(texts: List[Tuple[int, str]], db_file="diff_tag.db"):
+def __persist_raw_texts(texts: List[str], db_file="diff_tag.db") -> List[int]:
     con = sqlite3.connect(db_file)
     cur = con.cursor()
-    cur.executemany("INSERT INTO texts (id, text) VALUES (?, ?)", texts)
+
+    ids = []
+    for t in texts:
+        cur.execute("INSERT INTO texts (text) VALUES (?)", t)
+        ids.append(cur.lastrowid)
+
     con.commit()
     con.close()
+
+    return ids
 
 
 def __persist_diff_records(records: List[DiffRecord], db_file="diff_tag.db"):
@@ -294,7 +305,7 @@ def __setup_db(db_file="diff_tag.db"):
 
     cur.execute("""
         CREATE TABLE IF NOT EXISTS texts (
-            id      INTEGER PRIMARY KEY,
+            id      INTEGER PRIMARY KEY AUTOINCREMENT,
             text    TEXT
         )
     """)
