@@ -1,3 +1,4 @@
+from typing import Literal
 import numpy as np
 import pandas as pd
 
@@ -6,7 +7,12 @@ from plotnine import aes, geom_step
 
 
 def geom_pr_simulate(
-    n_sim: int, n_samp: int, pos_rate=0.5, h0_correct=0.0, q=None, method="tail"
+    n_sim: int,
+    n_samp: int,
+    pos_rate: float = 0.5,
+    h0_correct: float = 0.0,
+    q: float | None = None,
+    method: Literal["tail", "body"] = "tail",
 ) -> geom_step:
     """
     Simulate and plot precision recall curves
@@ -21,9 +27,9 @@ def geom_pr_simulate(
         Proporion of positive classes in population. Must be between 0 and 1.
     h0_correct : float, default 0.0
         Proporion of samples nullmodel can correctly handle.
-    q : float, default None
+    q : float | None, default None
         Quantile of curves to plot.
-    method : {'tail', 'body'}, default 'tail'
+    method : Literal['tail', 'body'], default 'tail'
         Score randomization method
 
     Returns
@@ -35,7 +41,7 @@ def geom_pr_simulate(
     simulated_curves = [pr_curve(y_true, y_s)[:2] for y_s in y_scores]
 
     if q is not None:
-        p, r = pr_quantile_interp(simulated_curves, q)
+        p, r = pr_quantile(simulated_curves, q)
         df = pd.DataFrame({"precision": p, "recall": r})
         return geom_step(mapping=aes("recall", "precision"), data=df)
     else:
@@ -50,10 +56,14 @@ def geom_pr_simulate(
 
 
 def geom_pr_hypergeom(
-    n_samp: int, pos_rate=0.5, h0_correct=0.0, q=0.9, method="tail"
+    n_samp: int,
+    pos_rate: float = 0.5,
+    h0_correct: float = 0.0,
+    q: float = 0.9,
+    method: Literal["tail", "body"] = "tail",
 ) -> geom_step:
     """
-    Compute and plot precision recall curve
+    Compute precision recall curve and return a corresponding ggplot geometry
 
     Parameters
     ----------
@@ -65,7 +75,7 @@ def geom_pr_hypergeom(
         Proporion of samples nullmodel can correctly handle.
     q : float, default 0.9
         Quantile of curves to plot.
-    method : {'tail', 'body'}, default 'tail'
+    method : Literal['tail', 'body'], default 'tail'
         Score randomization method
 
     Returns
@@ -112,11 +122,15 @@ def pr_curve(
     return t_pos / p_pos, t_pos / n_pos, y_score
 
 
-def pr_quantile_interp(
-    curves: np.ndarray | list, q=0.9
+def __smoothen_pr_curve(p: np.ndarray, r: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    raise NotImplementedError("TODO: optionally make the curves prettier")
+
+
+def pr_quantile(
+    curves: np.ndarray | list, q: float = 0.9
 ) -> tuple[np.ndarray, np.ndarray]:
     """
-    Interpolate q-th quantile of precision recall curves.
+    Compute quantile of simulated precision-recall curves
 
     Parameters
     ----------
@@ -133,23 +147,27 @@ def pr_quantile_interp(
         Interpolation knots.
     """
 
-    def __decreasing(p, r):
-        idx = np.flip(np.diff(r[::-1], prepend=2) > 0)
-        return p[idx], r[idx]
+    def __increasing(p, r):
+        # only pick points where recall is strictly increasing
+        r, uniq_idx = np.unique(r, return_index=True)
+        p = p[uniq_idx]
+        return p, r
 
-    knots = np.linspace(0, 1)
-    dec = [__decreasing(*c) for c in curves]
-    interps = [np.interp(knots, xp=r[::-1], fp=p)[::-1] for p, r in dec]
+    curves = [__increasing(*c) for c in curves]
 
-    return np.quantile(interps, q=q, axis=0), knots
+    r_grid = np.linspace(0, 1)
+    p_grids = [np.interp(r_grid, xp=r, fp=p) for p, r in curves]
+    p_quantile = np.quantile(p_grids, q=q, axis=0)
+
+    return p_quantile, r_grid
 
 
 def pr_quantile_hypergeom(
     n_samp: int,
-    q=0.9,
-    pos_rate=0.5,
-    h0_correct=0.0,
-    method="tail",
+    q: float = 0.9,
+    pos_rate: float = 0.5,
+    h0_correct: float = 0.0,
+    method: Literal["tail", "body"] = "tail",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Compute q-th quantile of precision recall curve with hypergeometric
@@ -163,7 +181,7 @@ def pr_quantile_hypergeom(
         Quantile.
     pos_rate : float, default 0.5
         Proporion of positive classes in population. Must be between 0 and 1.
-    method : {'tail', 'body'}, default 'tail'
+    method : Literal['tail', 'body'], default 'tail'
         Score randomization method
 
     Returns
@@ -175,6 +193,8 @@ def pr_quantile_hypergeom(
     threshold : ndarray of shape (n_samp,)
         Thresholds for precision-recall points.
     """
+    if method not in ["tail", "body"]:
+        raise ValueError(f"Invailid method, got '{method}', should be 'tail' or 'body'")
 
     if method == "tail":
         return __pr_hypergeom_tail(
@@ -184,37 +204,17 @@ def pr_quantile_hypergeom(
         return __pr_hypergeom_body(
             n_samp=n_samp, q=q, pos_rate=pos_rate, h0_correct=h0_correct
         )
-    else:
-        raise ValueError(f"Invailid method, got '{method}', should be 'tail' or 'body'")
 
 
 def __pr_hypergeom_tail(
     n_samp: int,
-    q=0.9,
-    pos_rate=0.5,
-    h0_correct=0.0,
+    q: float = 0.9,
+    pos_rate: float = 0.5,
+    h0_correct: float = 0.0,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Compute q-th quantile of precision recall curve with hypergeometric
-    distribution with tail method
-
-    Parameters
-    ----------
-    n_samp: integer
-        Number of samples
-    q : float, default 0.9
-        Quantile.
-    pos_rate : float, default 0.5
-        Proporion of positive classes in population. Must be between 0 and 1.
-
-    Returns
-    -------
-    precision : ndarray of shape (n_samp,)
-        Precision values.
-    recall : ndarray of shape (n_samp,)
-        Recall values.
-    threshold : ndarray of shape (n_samp,)
-        Thresholds for precision-recall points.
+    distribution using tail method.
     """
     th = np.arange(n_samp) / n_samp
     pos = int(n_samp * pos_rate)
@@ -239,31 +239,13 @@ def __pr_hypergeom_tail(
 
 def __pr_hypergeom_body(
     n_samp: int,
-    q=0.9,
-    pos_rate=0.5,
-    h0_correct=0.0,
+    q: float = 0.9,
+    pos_rate: float = 0.5,
+    h0_correct: float = 0.0,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Compute q-th quantile of precision recall curve with hypergeometric
-    distribution with body method
-
-    Parameters
-    ----------
-    n_samp: integer
-        Number of samples
-    q : float, default 0.9
-        Quantile.
-    pos_rate : float, default 0.5
-        Proporion of positive classes in population. Must be between 0 and 1.
-
-    Returns
-    -------
-    precision : ndarray of shape (n_samp,)
-        Precision values.
-    recall : ndarray of shape (n_samp,)
-        Recall values.
-    threshold : ndarray of shape (n_samp,)
-        Thresholds for precision-recall points.
+    distribution using body method.
 
     Raises
     ------
@@ -292,38 +274,16 @@ def __pr_hypergeom_body(
 def __simulate(
     n_sim: int,
     n_samp: int,
-    pos_rate=0.5,
-    h0_correct=0.0,
-    method="tail",
+    pos_rate: float = 0.5,
+    h0_correct: float = 0.0,
+    method: Literal["tail", "body"] = "tail",
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Simulate nullmodels.
-
-    Parameters
-    ----------
-    n_sim : integer
-        Number of simulations.
-    n_samp : integer
-        Number of samples in each simulation.
-    pos_rate : float, default 0.5
-        Proporion of positive classes in population. Must be between 0 and 1.
-    h0_correct : float, default 0.0
-        Proporion of samples nullmodel can correctly handle.
-    method : {'tail', 'body'}, default 'tail'
-        Score randomization method
-
-    Returns
-    -------
-    y_true : ndarray of shape (n_samp,)
-        True labels
-    y_scores : ndarray of shape (n_sim, n_samp).
-        Simulated scores
-
-    Raises
-    ------
-    ValueError
-        When incorrect ``method`` is provided
     """
+
+    if method not in ["tail", "body"]:
+        raise ValueError(f"Invailid method, got '{method}', should be 'tail' or 'body'")
 
     def __randomize_score_tail(init_score):
         h0_correct_2 = h0_correct / 2
@@ -342,8 +302,6 @@ def __simulate(
         method_f = __randomize_score_tail
     elif method == "body":
         method_f = __randomize_score_body
-    else:
-        raise ValueError(f"Invailid method: got '{method}', should be 'tail' or 'body'")
 
     n_pos = int(pos_rate * n_samp)
     n_neg = n_samp - n_pos
@@ -357,7 +315,7 @@ def __simulate(
 
 __all__ = [
     "pr_quantile_hypergeom",
-    "pr_quantile_interp",
+    "pr_quantile",
     "geom_pr_hypergeom",
     "geom_pr_simulate",
     "pr_curve",
