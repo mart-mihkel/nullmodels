@@ -1,5 +1,6 @@
 import sqlite3
 import warnings
+import tempfile
 
 from estnltk import Layer, Text
 from estnltk_core.layer_operations import diff_layer
@@ -31,7 +32,7 @@ def __collect_diff_layer(
     texts: list[Text], text_ids: list[int], layer_a: str, layer_b: str
 ) -> list[DiffRecord]:
     """
-    ...
+    Collect conflicting annotations in shape of database records.
     """
     assert len(texts) == len(text_ids), "texts and text_ids have different shape"
 
@@ -62,7 +63,7 @@ def __attach_diff_annotations(
     texts: list[Text], layer_a: str, layer_b: str, annotations: defaultdict[str, list]
 ) -> list[Text]:
     """
-    ...
+    Create new texts with just the sampled annotations.
     """
     res = []
     for text in texts:
@@ -169,7 +170,7 @@ def sample_diff_annotations(
     layer_a: str,
     layer_b: str,
     n_samples: int,
-    sqlite_db_path: str = "/tmp/diff_tag.db",
+    sqlite_db_path: str | None = None,
     verbose: bool = False,
 ) -> list[Text]:
     """
@@ -188,7 +189,7 @@ def sample_diff_annotations(
         Second layer to compare.
     n_samples : int
         Number of conflicting annotations to sample.
-    sqlite_db_path : str, default '/tmp/diff_tag.db'
+    sqlite_db_path : str | None, default '/tmp/diff_tag.db'
         Sqlite database file path.
     verbose : bool, default False
         Verbose
@@ -200,6 +201,9 @@ def sample_diff_annotations(
     """
     if isinstance(texts, Text):
         texts = [texts]
+
+    if sqlite_db_path is None:
+        sqlite_db_path = os.path.join(tempfile.gettempdir(), "diff_tag.db")
 
     con = sqlite3.connect(sqlite_db_path)
     if verbose:
@@ -280,7 +284,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--sqlite-db",
-        default="/tmp/diff_tag.db",
+        default=os.path.join(tempfile.gettempdir(), "diff_tag.db"),
         type=str,
         help="Sqlite database file used for diff annotation sampling",
     )
