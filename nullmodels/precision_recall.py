@@ -1,9 +1,9 @@
-from typing import Literal
+import scipy
+import plotnine
 import numpy as np
 import pandas as pd
 
-from scipy.stats import hypergeom
-from plotnine import aes, geom_step
+from typing import Literal
 
 
 def geom_pr_simulate(
@@ -13,7 +13,9 @@ def geom_pr_simulate(
     h0_correct: float = 0.0,
     q: float | None = None,
     method: Literal["tail", "body"] = "tail",
-) -> geom_step:
+    plot_smoothing: Literal["precision-envelope", "moving-average"] | None = None,
+    **kwargs,
+) -> plotnine.geom_step:
     """
     Simulate and plot precision recall curves
 
@@ -31,6 +33,10 @@ def geom_pr_simulate(
         Quantile of curves to plot.
     method : Literal['tail', 'body'], default 'tail'
         Score randomization method
+    plot_smoothing : Literal["precision-envelope", "moving-average"] | None, default None
+        Optionally apply a smoothing to plotted curves.
+    **kwargs :
+        Keyword arguments passed to ggplot geometry
 
     Returns
     -------
@@ -40,18 +46,32 @@ def geom_pr_simulate(
     y_true, y_scores = __simulate(n_sim, n_samp, pos_rate, h0_correct, method)
     simulated_curves = [pr_curve(y_true, y_s)[:2] for y_s in y_scores]
 
+    smoothing_f = None
+    if plot_smoothing == "moving-average":
+        smoothing_f = moving_average
+    elif plot_smoothing == "precision-envelope":
+        smoothing_f = precision_envelope
+
     if q is not None:
-        p, r = pr_quantile(simulated_curves, q)
-        df = pd.DataFrame({"precision": p, "recall": r})
-        return geom_step(mapping=aes("recall", "precision"), data=df)
+        p, r = pr_quantile(np.array(simulated_curves), q)
+        if smoothing_f:
+            p, r = smoothing_f(p, r)
+
+        return plotnine.geom_step(
+            mapping=plotnine.aes("recall", "precision"),
+            data=pd.DataFrame({"precision": p, "recall": r}),
+            **kwargs,
+        )
     else:
+        if smoothing_f:
+            simulated_curves = [smoothing_f(*c) for c in simulated_curves]
+
         p, r = np.hstack(simulated_curves)
-        g = np.repeat(np.arange(n_sim), n_samp)
-        df = pd.DataFrame({"precision": p, "recall": r, "group": g})
-        return geom_step(
-            mapping=aes("recall", "precision", group="group"),
-            data=df,
-            alpha=max(0.05, 1 / n_sim),
+        grp = np.repeat(np.arange(n_sim), n_samp)
+        return plotnine.geom_step(
+            mapping=plotnine.aes("recall", "precision", group="group"),
+            data=pd.DataFrame({"precision": p, "recall": r, "group": grp}),
+            **kwargs,
         )
 
 
@@ -61,7 +81,9 @@ def geom_pr_hypergeom(
     h0_correct: float = 0.0,
     q: float = 0.9,
     method: Literal["tail", "body"] = "tail",
-) -> geom_step:
+    plot_smoothing: Literal["precision-envelope", "moving-average"] | None = None,
+    **kwargs,
+) -> plotnine.geom_step:
     """
     Compute precision recall curve and return a corresponding ggplot geometry
 
@@ -77,6 +99,10 @@ def geom_pr_hypergeom(
         Quantile of curves to plot.
     method : Literal['tail', 'body'], default 'tail'
         Score randomization method
+    plot_smoothing : Literal["precision-envelope", "moving-average"] | None, default None
+        Optionally apply a smoothing to plotted curves.
+    **kwargs :
+        Keyword arguments passed to ggplot geometry
 
     Returns
     -------
@@ -87,8 +113,15 @@ def geom_pr_hypergeom(
         n_samp, h0_correct=h0_correct, q=q, pos_rate=pos_rate, method=method
     )
 
+    if plot_smoothing == "moving-average":
+        p, r = moving_average(p, r)
+    elif plot_smoothing == "precision-envelope":
+        p, r = precision_envelope(p, r)
+
     df = pd.DataFrame({"precision": p, "recall": r})
-    return geom_step(aes("recall", "precision"), data=df)
+    return plotnine.geom_step(
+        mapping=plotnine.aes("recall", "precision"), data=df, **kwargs
+    )
 
 
 def pr_curve(
@@ -113,29 +146,77 @@ def pr_curve(
     threshold : ndarray
         Thresholds for precision-recall points.
     """
-    thresold_pred = np.less_equal.outer(y_score, y_score)
+    dec_idx = np.argsort(y_score)[::-1]
+    y_score = y_score[dec_idx]
+    y_true = y_true[dec_idx]
 
-    n_pos = y_true.sum()
-    p_pos = thresold_pred.sum(axis=1)
-    t_pos = np.array([y_true[pred].sum() for pred in thresold_pred])
+    tps = np.cumsum(y_true)
+    fps = np.cumsum(1 - y_true)
 
-    return t_pos / p_pos, t_pos / n_pos, y_score
+    precision = tps / (tps + fps)
+    recall = tps / y_true.sum()
 
-
-def __smoothen_pr_curve(p: np.ndarray, r: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    raise NotImplementedError("TODO: optionally make the curves prettier")
+    return precision, recall, y_score
 
 
-def pr_quantile(
-    curves: np.ndarray | list, q: float = 0.9
+def precision_envelope(p: np.ndarray, r: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Conpute precision envelope of precision-recall curve
+
+    Parameters
+    ----------
+    precision : ndarray
+        Precision values.
+    recall : ndarray
+        Recall values.
+
+    Returns
+    -------
+    precision : ndarray
+        Enveloping precision values.
+    recall : ndarray
+        Recall values.
+    """
+    inc_idx = np.argsort(r)
+    p, r = p[inc_idx], r[inc_idx]
+    p_envelope = np.maximum.accumulate(p[::-1])[::-1]
+    return p_envelope, r
+
+
+def moving_average(
+    p: np.ndarray, r: np.ndarray, window: int = 4
 ) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Compute moving average on precision values
+
+    Parameters
+    ----------
+    precision : ndarray
+        Precision values.
+    recall : ndarray
+        Recall values.
+    window : int, default 4
+        Size of the sliding window
+
+    Returns
+    -------
+    precision : ndarray
+        Averaged precision values.
+    recall : ndarray
+        Recall values.
+    """
+    p_ma = np.convolve(p, np.ones(window) / window, mode="same")
+    return p_ma, r
+
+
+def pr_quantile(curves: np.ndarray, q: float = 0.9) -> tuple[np.ndarray, np.ndarray]:
     """
     Compute quantile of simulated precision-recall curves
 
     Parameters
     ----------
     curves : ndarray
-        Array of (precision, recall) tuples.
+        Array of (precisions, recalls) tuples.
     q : float, default 0.9
         Quantile.
 
@@ -146,17 +227,15 @@ def pr_quantile(
     recall : ndarray
         Interpolation knots.
     """
-
-    def __increasing(p, r):
-        # only pick points where recall is strictly increasing
-        r, uniq_idx = np.unique(r, return_index=True)
-        p = p[uniq_idx]
-        return p, r
-
-    curves = [__increasing(*c) for c in curves]
-
     r_grid = np.linspace(0, 1)
-    p_grids = [np.interp(r_grid, xp=r, fp=p) for p, r in curves]
+    p_grids = [None] * curves.shape[0]
+    for i, (p, r) in enumerate(curves):
+        # only pick points where recall is strictly increasing
+        r_uniq, uniq_idx = np.unique(r, return_index=True)
+        p_uniq = p[uniq_idx]
+
+        p_grids[i] = np.interp(r_grid, xp=r_uniq, fp=p_uniq)
+
     p_quantile = np.quantile(p_grids, q=q, axis=0)
 
     return p_quantile, r_grid
@@ -226,7 +305,7 @@ def __pr_hypergeom_tail(
     pos_hyp = (1 - h0_correct) * pos
 
     pred_pos_hyp = pred_pos[(lb < pred_pos) & (pred_pos < ub)] - lb
-    true_pos_hyp = hypergeom.ppf(M=n_hyp, n=pred_pos_hyp, N=pos_hyp, q=q)
+    true_pos_hyp = scipy.stats.hypergeom.ppf(M=n_hyp, n=pred_pos_hyp, N=pos_hyp, q=q)
 
     # TODO: upper and lower bound true positives might be incorrect with
     #       certain edge case values of ``pos_rate``
@@ -316,7 +395,9 @@ def __simulate(
 __all__ = [
     "pr_quantile_hypergeom",
     "pr_quantile",
+    "pr_curve",
+    "precision_envelope",
+    "moving_average",
     "geom_pr_hypergeom",
     "geom_pr_simulate",
-    "pr_curve",
 ]

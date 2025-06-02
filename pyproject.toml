@@ -7,10 +7,8 @@ requires-python = ">=3.13"
 dependencies = [
     "numpy>=2.2.1",
     "scipy>=1.15.1",
-    "plotnine>=0.14.4",
     "pandas>=2.2.3",
-    "estnltk>=1.7.4",
-    "psycopg2-binary>=2.9.10",
+    "plotnine>=0.14.4",
 ]
 
 [project.optional-dependencies]
