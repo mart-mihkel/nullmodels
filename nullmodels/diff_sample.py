@@ -29,7 +29,7 @@ type TextDiffRecord = tuple[
 
 
 def __collect_diff_layer(
-    texts: list[Text], text_ids: list[int], layer_a: str, layer_b: str
+    texts: list[Text], text_ids: list[int], layer_a: str, layer_b: str, label_attr: str
 ) -> list[DiffRecord]:
     """
     Collect conflicting annotations in shape of database records.
@@ -47,11 +47,11 @@ def __collect_diff_layer(
 
             if span_a:
                 a_start, a_end = span_a.start, span_a.end
-                a_annt = span_a.annotations[0]["nertag"]
+                a_annt = span_a.annotations[0][label_attr]
 
             if span_b:
                 b_start, b_end = span_b.start, span_b.end
-                b_annt = span_b.annotations[0]["nertag"]
+                b_annt = span_b.annotations[0][label_attr]
 
             record = (id, a_start, a_end, a_annt, b_start, b_end, b_annt)
             res.append(record)
@@ -169,6 +169,7 @@ def sample_diff_annotations(
     texts: Text | list[Text],
     layer_a: str,
     layer_b: str,
+    label_attr: str,
     n_samples: int,
     sqlite_db_path: str | None = None,
     verbose: bool = False,
@@ -187,6 +188,8 @@ def sample_diff_annotations(
         First layer to compare.
     layer_b : str
         Second layer to compare.
+    label_attr : str
+        Span annotation attribute.
     n_samples : int
         Number of conflicting annotations to sample.
     sqlite_db_path : str | None, default '/tmp/diff_tag.db'
@@ -211,7 +214,7 @@ def sample_diff_annotations(
 
     __setup_db(con)
     text_ids = __insert_raw_texts(texts, con)
-    diff_records = __collect_diff_layer(texts, text_ids, layer_a, layer_b)
+    diff_records = __collect_diff_layer(texts, text_ids, layer_a, layer_b, label_attr)
     __insert_diff_layer(diff_records, con)
 
     samples = __sample_diff_annotations(n_samples, con)
@@ -246,23 +249,25 @@ if __name__ == "__main__":
     from estnltk.converters import json_to_text, text_to_json
 
     parser = argparse.ArgumentParser(
-        description="Uniformly sample conflicting NER "
-        "annotations between two layers of multiple texts."
+        description="Uniformly sample conflicting NER annotations "
+        "between two layers of multiple texts."
     )
 
+    parser.add_argument("--layer-a", "-a", type=str, help="Text layer a", required=True)
+    parser.add_argument("--layer-b", "-b", type=str, help="Text layer b", required=True)
     parser.add_argument(
-        "--layer-a", "-a", type=str, help="First layer to compare", required=True
-    )
-
-    parser.add_argument(
-        "--layer-b", "-b", type=str, help="Second layer to compare", required=True
+        "--label-attribute",
+        "-l",
+        type=str,
+        help="Span annotation attribute",
+        required=True,
     )
 
     parser.add_argument(
         "--num-samples",
         "-n",
         type=int,
-        help="Number of conflicting annotations to sample",
+        help="Number of samples",
         required=True,
     )
 
@@ -270,7 +275,7 @@ if __name__ == "__main__":
         "--text-dir",
         "-d",
         type=str,
-        help="Path to directory with json serialized texts",
+        help="Input to directory with json serialized texts",
         required=True,
     )
 
@@ -279,20 +284,20 @@ if __name__ == "__main__":
         "-o",
         default="diff_tag_out",
         type=str,
-        help="Directory to output texts with sampled conflicting annotations",
+        help="Output directory",
     )
 
     parser.add_argument(
         "--sqlite-db",
         default=os.path.join(tempfile.gettempdir(), "diff_tag.db"),
         type=str,
-        help="Sqlite database file used for diff annotation sampling",
+        help="Sqlite database file",
     )
 
     parser.add_argument(
         "--keep-db",
         action="store_true",
-        help="If present doesn't delete sqlite database after running script",
+        help="Don't delete sqlite database if present",
     )
 
     parser.add_argument(
@@ -323,6 +328,7 @@ if __name__ == "__main__":
         in_texts,
         args.layer_a,
         args.layer_b,
+        args.label_attribute,
         n_samples=args.num_samples,
         sqlite_db_path=args.sqlite_db,
         verbose=args.verbose,
@@ -334,7 +340,7 @@ if __name__ == "__main__":
         text_to_json(out_text, file=out_txt_path)
 
     if args.verbose:
-        print(f"Wrote {len(out_texts)} to {args.out_dir}")
+        print(f"Wrote {len(out_texts)} texts to {args.out_dir}")
 
     if not args.keep_db:
         os.remove(args.sqlite_db)
