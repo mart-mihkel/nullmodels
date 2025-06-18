@@ -1,21 +1,14 @@
+import os
 import sqlite3
 import warnings
-import tempfile
-
-from estnltk import Layer, Text
-from estnltk_core.layer_operations import diff_layer
 
 from collections import defaultdict
 
-type DiffRecord = tuple[
-    int,
-    int | None,
-    int | None,
-    str | None,
-    int | None,
-    int | None,
-    str | None,
-]
+from estnltk import Layer, Text
+from estnltk.converters.label_studio.labelling_tasks import DiffTaggingTask
+from estnltk.converters.label_studio.labelling_configurations import (
+    DiffTaggingConfiguration,
+)
 
 type TextDiffRecord = tuple[
     str,
@@ -28,62 +21,37 @@ type TextDiffRecord = tuple[
 ]
 
 
-def __collect_diff_layer(
-    texts: list[Text], text_ids: list[int], layer_a: str, layer_b: str, label_attr: str
-) -> list[DiffRecord]:
-    """
-    Collect conflicting annotations in shape of database records.
-    """
-    assert len(texts) == len(text_ids), "texts and text_ids have different shape"
-
-    res = []
-    for text, id in zip(texts, text_ids):
-        assert layer_a in text.layers, f"Text {id} is missing '{layer_a}' layer"
-        assert layer_b in text.layers, f"Text {id} is missing '{layer_b}' layer"
-
-        for span_a, span_b in diff_layer(text[layer_a], text[layer_b]):
-            a_start, a_end, a_annt = None, None, None
-            b_start, b_end, b_annt = None, None, None
-
-            if span_a:
-                a_start, a_end = span_a.start, span_a.end
-                a_annt = span_a.annotations[0][label_attr]
-
-            if span_b:
-                b_start, b_end = span_b.start, span_b.end
-                b_annt = span_b.annotations[0][label_attr]
-
-            record = (id, a_start, a_end, a_annt, b_start, b_end, b_annt)
-            res.append(record)
-
-    return res
-
-
 def __attach_diff_annotations(
-    texts: list[Text], layer_a: str, layer_b: str, annotations: defaultdict[str, list]
+    annotations: list[TextDiffRecord],
+    layer_a: str,
+    layer_b: str,
+    label_attribute: str,
 ) -> list[Text]:
     """
     Create new texts with just the sampled annotations.
     """
-    res = []
-    for text in texts:
-        new_text = Text(text.text)
+    annt_grouped = defaultdict(list)
+    for annt in annotations:
+        text, annt = annt[0], annt[1:]
+        annt_grouped[text].append(annt)
 
-        new_a = Layer(layer_a, attributes=["nertag"], ambiguous=True)
-        new_b = Layer(layer_b, attributes=["nertag"], ambiguous=True)
+    res = []
+    for text, annt in annt_grouped.items():
+        new_text = Text(text)
+
+        new_a = Layer(layer_a, attributes=[label_attribute], ambiguous=True)
+        new_b = Layer(layer_b, attributes=[label_attribute], ambiguous=True)
 
         new_text.add_layer(new_a)
         new_text.add_layer(new_b)
 
-        for annt in annotations[text.text]:
-            a_start, a_end, a_annt, b_start, b_end, b_annt = annt
-
+        for a_start, a_end, a_annt, b_start, b_end, b_annt in annt:
             if a_start is not None and a_end is not None and a_annt:
-                attr = {"nertag": a_annt}
+                attr = {label_attribute: a_annt}
                 new_a.add_annotation((a_start, a_end), attribute_dict=attr)
 
             if b_start is not None and b_end is not None and b_annt:
-                attr = {"nertag": b_annt}
+                attr = {label_attribute: b_annt}
                 new_b.add_annotation((b_start, b_end), attribute_dict=attr)
 
         res.append(new_text)
@@ -112,159 +80,84 @@ def __sample_diff_annotations(
     )
 
 
-def __insert_raw_texts(texts: list[Text], con: sqlite3.Connection) -> list[int]:
-    cur = con.cursor()
-
-    ids = []
-    for t in texts:
-        cur.execute("INSERT INTO texts (text) VALUES (?)", [t.text])
-        ids.append(cur.lastrowid)
-
-    con.commit()
-
-    return ids
-
-
-def __insert_diff_layer(records: list[DiffRecord], con: sqlite3.Connection):
-    cur = con.cursor()
-    cur.executemany(
-        """
-        INSERT INTO diff_annotations  (
-            text_id,
-            a_start, a_end, a_annt, 
-            b_start, b_end, b_annt
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        """,
-        records,
-    )
-
-    con.commit()
-
-
-def __setup_db(con: sqlite3.Connection):
-    cur = con.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS diff_annotations (
-            id      INTEGER PRIMARY KEY AUTOINCREMENT,
-            text_id INT,
-            a_start INT,
-            a_end   INT,
-            a_annt  TEXT,
-            b_start INT,
-            b_end   INT,
-            b_annt  TEXT
-        )
-    """)
-
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS texts (
-            id      INTEGER PRIMARY KEY AUTOINCREMENT,
-            text    TEXT
-        )
-    """)
-
-
-def sample_diff_annotations(
-    texts: Text | list[Text],
+def sample_diff_task(
     layer_a: str,
     layer_b: str,
-    label_attr: str,
     n_samples: int,
-    sqlite_db_path: str | None = None,
-    verbose: bool = False,
-) -> list[Text]:
-    """
-    Collects all the conflicting, extra or missing nertag annotations in all
-    the texts between layers a and b. Saves them in an sqlite databse. And
-    uniformly samples from these and returns a list of new texts with only
-    the sampled conflicting annotations.
-
-    Parameters
-    ----------
-    texts : Text | list[Text]
-        Texts to sample from.
-    layer_a : str
-        First layer to compare.
-    layer_b : str
-        Second layer to compare.
-    label_attr : str
-        Span annotation attribute.
-    n_samples : int
-        Number of conflicting annotations to sample.
-    sqlite_db_path : str | None, default '/tmp/diff_tag.db'
-        Sqlite database file path.
-    verbose : bool, default False
-        Verbose
-
-    Returns
-    -------
-    texts : list[Text]
-        New texts with only the sampled annotations.
-    """
-    if isinstance(texts, Text):
-        texts = [texts]
-
-    if sqlite_db_path is None:
-        sqlite_db_path = os.path.join(tempfile.gettempdir(), "diff_tag.db")
-
-    con = sqlite3.connect(sqlite_db_path)
-    if verbose:
-        print(f"Created sqlite databse {sqlite_db_path}")
-
-    __setup_db(con)
-    text_ids = __insert_raw_texts(texts, con)
-    diff_records = __collect_diff_layer(texts, text_ids, layer_a, layer_b, label_attr)
-    __insert_diff_layer(diff_records, con)
+    label_attribute: str = "nertag",
+    class_labels: list[str] = ["PER", "ORG", "LOC"],
+    header: str = "Choose text with correct annotation",
+    sqlite_db: str = "difftag.db",
+    out_dir: str = "difftag",
+):
+    con = sqlite3.connect(sqlite_db)
+    print(f"Conneted to sqlite databse: {sqlite_db}")
 
     samples = __sample_diff_annotations(n_samples, con)
-    samples_grouped = defaultdict(list)
-    for sample in samples:
-        text, annt = sample[0], sample[1:]
-        samples_grouped[text].append(annt)
-
     con.close()
 
     if len(samples) < n_samples:
         warnings.warn(
-            "Sampled less annotations than requested, "
-            f"got {len(samples)}, requested {n_samples}",
-            UserWarning,
+            f"Sampled less annotations than requested, got {len(samples)}, requested {n_samples}"
         )
-    elif verbose:
-        print(f"Sampled {len(samples)} conflicting annotations from {len(texts)} texts")
 
-    texts_out = __attach_diff_annotations(texts, layer_a, layer_b, samples_grouped)
+    task_texts = __attach_diff_annotations(samples, layer_a, layer_b, label_attribute)
 
-    return texts_out
+    conf = DiffTaggingConfiguration(
+        layer_a=layer_a,
+        layer_b=layer_b,
+        class_labels=class_labels,
+        header=header,
+    )
+
+    task = DiffTaggingTask(configuration=conf, label_attribute=label_attribute)
+
+    os.makedirs(out_dir, exist_ok=True)
+    task.export_data(task_texts, os.path.join(out_dir, "diff_tagging_task.json"))
+    with open(os.path.join(out_dir, "diff_tagging_interface.xml"), "w") as f:
+        f.write(task.interface_file)
+
+    print(f"\nWrote label-studio task and interface to out dir: {out_dir}")
 
 
-__all__ = ["sample_diff_annotations"]
+__all__ = ["sample_diff_task"]
 
 
 if __name__ == "__main__":
-    import os
     import argparse
 
-    from estnltk.converters import json_to_text, text_to_json
-
     parser = argparse.ArgumentParser(
-        description="Uniformly sample conflicting NER annotations "
-        "between two layers of multiple texts."
+        description="Create label-studio diff tagging task by sampling from an sqlite database created by 'diff_collect.py' script"
     )
 
     parser.add_argument("--layer-a", "-a", type=str, help="Text layer a", required=True)
     parser.add_argument("--layer-b", "-b", type=str, help="Text layer b", required=True)
+
     parser.add_argument(
         "--label-attribute",
         "-l",
         type=str,
-        help="Span annotation attribute",
-        required=True,
+        help="Span annotation attribute, 'nertag' by default",
+        default="nertag",
     )
 
     parser.add_argument(
-        "--num-samples",
+        "--class-labels",
+        type=str,
+        nargs="+",
+        help="List of class labels, 'PER ORG LOC' by default",
+        default=["PER", "ORG", "LOC"],
+    )
+
+    parser.add_argument(
+        "--header",
+        type=str,
+        help="Label studio task header, 'Choose text with correct annotation' by default",
+        default="Choose text with correct annotation",
+    )
+
+    parser.add_argument(
+        "--n-samples",
         "-n",
         type=int,
         help="Number of samples",
@@ -272,77 +165,28 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--text-dir",
-        "-d",
-        type=str,
-        help="Input to directory with json serialized texts",
-        required=True,
-    )
-
-    parser.add_argument(
         "--out-dir",
         "-o",
-        default="diff_tag_out",
         type=str,
-        help="Output directory",
+        default="difftag",
+        help="Out dir, 'difftag' by default",
     )
 
     parser.add_argument(
         "--sqlite-db",
-        default=os.path.join(tempfile.gettempdir(), "diff_tag.db"),
+        default="difftag.db",
         type=str,
-        help="Sqlite database file",
-    )
-
-    parser.add_argument(
-        "--keep-db",
-        action="store_true",
-        help="Don't delete sqlite database if present",
-    )
-
-    parser.add_argument(
-        "--verbose",
-        "-v",
-        action="store_true",
-        help="Verbose",
+        help="Input sqlite database file, 'difftag.db' by default",
     )
 
     args = parser.parse_args()
 
-    if not os.path.isdir(args.text_dir):
-        parser.error(f"{args.text_dir} is not a valid directory")
-
-    if not os.path.isdir(args.out_dir) and os.path.exists(args.out_dir):
-        parser.error(f"{args.out_dir} is not a valid directory")
-
-    in_texts: list[Text] = []
-    in_txt_files = os.listdir(args.text_dir)
-    for in_txt_file in in_txt_files:
-        in_txt_path = os.path.join(args.text_dir, in_txt_file)
-        in_texts.append(json_to_text(file=in_txt_path))
-
-    if args.verbose:
-        print(f"Loaded {len(in_texts)} texts")
-
-    out_texts = sample_diff_annotations(
-        in_texts,
-        args.layer_a,
-        args.layer_b,
-        args.label_attribute,
-        n_samples=args.num_samples,
-        sqlite_db_path=args.sqlite_db,
-        verbose=args.verbose,
+    sample_diff_task(
+        layer_a=args.layer_a,
+        layer_b=args.layer_b,
+        label_attribute=args.label_attribute,
+        class_labels=args.class_labels,
+        header=args.header,
+        out_dir=args.out_dir,
+        n_samples=args.n_samples,
     )
-
-    os.makedirs(args.out_dir, exist_ok=True)
-    for out_text, out_txt_file in zip(out_texts, in_txt_files):
-        out_txt_path = os.path.join(args.out_dir, out_txt_file)
-        text_to_json(out_text, file=out_txt_path)
-
-    if args.verbose:
-        print(f"Wrote {len(out_texts)} texts to {args.out_dir}")
-
-    if not args.keep_db:
-        os.remove(args.sqlite_db)
-        if args.verbose:
-            print(f"Deleted sqlite3 database {args.sqlite_db}")
